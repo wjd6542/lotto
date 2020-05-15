@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kang.dao.LottoDao">
+
+	<!-- 전체 로또 정보 조회 -->
+	<select id="selectLotto" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select	* 
+		from	lotto_master 
+		where	drawNo = #{drawNo};
+	</select>
+	
+	<!-- 전체 로또 정보 조회 -->
+	<select id="selectOneLottoMaster" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select	* 
+		from	lotto_master 
+		where	drawNo = #{drawNo};
+	</select>
+	
+	<!-- 전체 로또 정보 조회 -->
+	<select id="selectLottoDetail" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select	* 
+		from	lotto_detail 
+		where	drawNo = #{drawNo};
+	</select>
+	
+	<!-- 전체 로또 정보 조회 -->
+	<select id="selectAddress" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select	* 
+		from	lotto_address 
+		where	drawNo = #{drawNo};
+	</select>
+	
+	<!-- 최신 로또 회차 조회 -->
+	<select id="selectMaxLotto" resultType="java.util.HashMap">
+		select	max(lottoNum) 
+		from	lotto_master;
+	</select>
+	
+	<!-- 위치 정보 그룹 data -->
+	<select id="selectAddrgroupData" resultType="java.util.HashMap">
+		select	addrType1 as addr, count(drawNo) as cnt
+		from	lotto_address 
+		group by addrType1;
+	</select>
+	
+	<!-- 위치 정보 그룹 data -->
+	<select id="selectAddrRank" resultType="java.util.HashMap">
+		select count(address) as cnt, CONCAT(addrType1, " ", shopName) as shopName
+		from lotto_address
+		group by address
+		order by cnt desc limit 0,10 ;
+	</select>
+
+	<!-- 번호별 카운트 조회 -->
+	<select id="selectFirstNumber" resultType="java.util.HashMap">
+		select	num1, num2, num3, num4, num5, num6, bonusNum as num7
+		from	lotto_master;
+	</select>
+	
+	<!-- 로또 빈도 조회 -->
+	<select id="selectNumberFrequency" resultType="java.util.HashMap">
+		select	b.drawNo, num1, num2, num3, num4, num5, num6, bonusNum as num7, lottoRank, winningCnt
+		from	lotto_master a, lotto_detail b
+		where	a.drawNo = b.drawNo;
+	</select>
+
+	<!-- 로또 빈도 조회 -->
+	<select id="selectMaxRanking" resultType="java.util.HashMap">
+		select * 
+		from lotto_master a, lotto_detail b
+		where a.drawNo = b.drawNo
+		order by totalSellingPrice desc
+		LIMIT 1;
+	</select>
+
+	<!-- 로또 위치 주소 조회 -->
+	<select id="selectAllAddress" resultType="java.util.HashMap">
+		select	* 
+		from	lotto_address;
+	</select>
+	
+	<!-- 로또 위치 주소 조회 -->
+	<select id="selectOneAddress" resultType="java.util.HashMap">
+		select	* 
+		from	lotto_address
+		where	drawNo = #{drawNo};
+	</select>
+	
+	<!-- 로또 위치 주소 조회 -->
+	<select id="selectYearData" resultType="java.util.HashMap">
+		select	b.drawNo, num1, num2, num3, num4, num5, num6, bonusNum as num7, winningCnt, substring_index(a.drawDate,'-', 1)  as year, b.sellingPriceByRank
+		from	lotto_master a, lotto_detail b 
+		where	a.drawNo = b.drawNo;
+	</select>
+	
+	<!-- 최신 로또 회차 추출-->
+	<select id="selectLastNum" resultType="java.util.HashMap">
+		select 	num1, num2, num3, num4, num5, num6, bonusNum as num7, drawNo
+		from 	lotto_master
+		order by masterNum desc
+		limit 1;
+	</select>
+	
+	<!-- 회차별 정보-->
+	<select id="selectOrderData" resultType="java.util.HashMap">
+		select	sum(winningCnt) as cnt, sum(winningPriceByRank) as price, drawNo
+		from 	lotto_detail 
+		group by drawNo;
+	</select>
+	
+	<!-- 지역별 1등 당첨인원-->
+	<select id="selectAddrRanking" resultType="java.util.HashMap">
+		select	count(*) as cnt, addrType1
+		from 	lotto_address
+		where  	address is not null
+		group by addrType1 
+		order by cnt desc;
+	</select>
+	
+	<!-- 지역별 1등 게임 타입 -->
+	<select id="selectAddrGameType" resultType="java.util.HashMap">
+		select	count(*) as cnt , gameType
+		from 	lotto_address
+		where 	address is not null
+		group by gameType;
+	</select>
+	
+	<!-- 1등 지역구 -->
+	<select id="selectAddrArea" resultType="java.util.HashMap">
+		select	count(*) as cnt, addrType1, addrType2
+		from 	lotto_address
+		where 	address is not null
+		group by addrType2 
+		order by cnt desc;
+	</select>
+
+	<!-- 로또정보 삽입 -->
+	<insert id="insertLottoMaster" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="master_num">
+		INSERT
+		INTO lotto_master
+			(
+				drawNo,
+				drawDate,
+				num1,
+				num2,
+				num3,
+				num4,
+				num5,
+				num6,
+				bonusNum,
+				totalSellingPrice,
+				c_date,
+				c_time
+			)
+		VALUES
+			(
+				#{drawNo},
+				#{drawDate},
+				#{num1},
+				#{num2},
+				#{num3},
+				#{num4},
+				#{num5},
+				#{num6},
+				#{bonusNum},
+				#{totalSellingPrice},
+				DATE_FORMAT(now(), '%Y-%m-%d'),
+				DATE_FORMAT(now(), '%H:%i:%s')
+			);
+	</insert>
+	
+	
+	<!-- 로또정보 삽입 -->
+	<insert id="insertLottoDetail" parameterType="java.util.HashMap" useGeneratedKeys="true">
+		INSERT
+		INTO lotto_detail
+			(
+				masterNum,
+				drawNo,
+				drawDate, 
+				lottoRank,
+				sellingPriceByRank,
+				winningPriceByRank,
+				winningCnt,
+				c_date,
+				c_time
+			)
+		VALUES
+			(
+				#{masterNum},
+				#{drawNo},
+				#{drawDate},
+				#{lottoRank},
+				#{sellingPriceByRank},
+				#{winningPriceByRank},
+				#{winningCnt},
+				DATE_FORMAT(now(), '%Y-%m-%d'),
+				DATE_FORMAT(now(), '%H:%i:%s')
+			);
+	</insert>
+	
+	
+	<!-- 로또정보 위치 정보 삽입 -->
+	<insert id="insertLottoAddress" parameterType="java.util.HashMap" useGeneratedKeys="true">
+		INSERT
+		INTO lotto_address
+			(
+				drawNo,
+				gameType,
+				shopName, 
+				address,
+				addrType1,
+				addrType2,
+				lat,
+				lng,
+				drawDate,
+				c_date,
+				c_time
+			)
+		values
+			(
+				#{drawNo},
+				#{gameType},
+				#{shopName}, 
+				#{address},
+				#{addrType1},
+				#{addrType2},
+				#{lat},
+				#{lng},
+				drawDate,
+				DATE_FORMAT(now(), '%Y-%m-%d'),
+				DATE_FORMAT(now(), '%H:%i:%s')
+			);
+	</insert>
+
+</mapper>
