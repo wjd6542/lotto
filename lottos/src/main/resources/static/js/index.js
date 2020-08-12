@@ -55,6 +55,9 @@ let index = {
 			drawNo :  drawNo
 		});
 		
+		// 마커 초기화
+		this.cleanMaker();
+		
 		// 선택 요소 생성
 		this.mkOption(drawNo);
 		

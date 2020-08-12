@@ -13,7 +13,7 @@ public class JspController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/")
-    public String index() throws Exception {
+    public String home() throws Exception {
         return "index";
     }
 	
@@ -24,7 +24,7 @@ public class JspController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/index")
-    public String index2() throws Exception {
+    public String index() throws Exception {
         return "index";
     }
 	
