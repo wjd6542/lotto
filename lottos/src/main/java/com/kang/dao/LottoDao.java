@@ -58,6 +58,12 @@ public interface  LottoDao {
 	// 최신 로또 정보
 	Map<String, Object> selectLastNum();
 	
+	// 레포트 - 년도별 당첨 정보
+	List<Map<String, Object>> selectReportYearData();
+	
+	// 레포트 - 월별 정보
+	List<Map<String, Object>> selectReportMonthData();
+	
 	// 마스터 로도 삽입
 	int insertLottoMaster(Map<String, Object> map);
 	

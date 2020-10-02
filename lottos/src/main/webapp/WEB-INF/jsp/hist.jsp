@@ -100,11 +100,11 @@
 			<hr>
 			<div class="row">
 				<div class="col-md-6">
-					<div id="layerdBarChart"></div>
+					<div id="layerPieChart"></div>
 				</div>
 				
 				<div class="col-md-6">
-					<div id="layerPieChart"></div>
+					<div id="layerdBarChart"></div>
 				</div>
 			</div>
 		</div>

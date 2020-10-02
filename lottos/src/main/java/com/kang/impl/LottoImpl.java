@@ -243,4 +243,14 @@ public class LottoImpl implements  LottoService {
 		return list;
 	}
 
+	@Override
+	public List<Map<String, Object>> selectReportYearData() {
+		return lottoDao.selectReportYearData();
+	}
+
+	@Override
+	public List<Map<String, Object>> selectReportMonthData() {
+		return lottoDao.selectReportMonthData();
+	}
+
 }

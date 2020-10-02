@@ -32,8 +32,6 @@
 			<h3>
 				<i class="fas fa-chart-line"></i> 년도별 정보
 			</h3>
-			<div></div>
-			<hr>
 			<div class="row">
 				<div class="col-md-12">
 					<div id="yearPriceChart"></div>
@@ -45,7 +43,6 @@
 			<h3>
 				<i class="fas fa-chart-line"></i> 회차별 정보
 			</h3>
-			<hr>
 			<div class="row">
 				<div class="col-md-12">
 					<div id="orderChart"></div> 
@@ -57,7 +54,6 @@
 			<h3>
 				<i class="far fa-chart-bar"></i> 회차별 당첨횟수
 			</h3>
-			<hr>
 			<div id="customLegend" class="col-md-4"></div>
 			
 			<div class="row">
@@ -69,8 +65,6 @@
 			<h3>
 				<i class="far fa-chart-bar"></i> 번호별 출현 빈도
 			</h3>
-			<hr>
-			
 			<div class="row">
 				<div id="numCountChart" class="col-md-12"></div>
 			</div>
@@ -80,9 +74,8 @@
 		
 		<div class="container">
 			<h3>
-				<i class="fas fa-chart-line"></i> 1등 상점 지역별 당첨인원
+				<i class="fas fa-chart-line"></i> 1등 당첨인원
 			</h3>
-			<hr>
 			<div class="row">
 				<div class="col-md-12">
 					<div id="addrRankingChart"></div>

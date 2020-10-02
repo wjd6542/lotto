@@ -59,6 +59,7 @@ public class LottoApi {
 		BufferedReader bf;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
+		System.out.println(appUrl);
 		
 		JSONObject jsonObj = null;
 		

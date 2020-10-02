@@ -47,7 +47,7 @@ let loder = {
 				btnIcon : "fas fa-arrow-down",
 			},
 			lotto : {
-				subText		: "간단하게 뽑아보자 로또",
+				subText		: "간단하게 뽑아보자",
 				mainText	: "원하는 번호를 카톡으로~!",
 				imgPath 	: "",
 				btnText 	: "로또 뽑기",

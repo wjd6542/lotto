@@ -152,7 +152,7 @@
 	<section class="page-section">
 		<div class="container">
 			<h3>
-				<i class="fas fa-map-marker-alt"></i> <span class="drawNo"></span> 로또 1등 당첨점
+				<i class="fas fa-map-marker-alt"></i> <span class="drawNo"></span>회 로또 1등 당첨점
 			</h3>
 			<hr>
 			<div class="row">
@@ -160,7 +160,6 @@
 			</div>
 		</div>
 	</section>
-
 
 
 	<jsp:include page="./common/footer.jsp" flush="false" />

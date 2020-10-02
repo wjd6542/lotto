@@ -110,6 +110,7 @@ let index = {
 		    series: [{
 		        type			: 'column',
 		        colorByPoint	: true,
+		        name 			: "1등 인원",
 		        data			: dataList,
 		        showInLegend	: false
 		    }]

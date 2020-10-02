@@ -1,10 +1,15 @@
 
 let index = {
-	// 최초 실행 함수
+		
+		
+	/**
+	 * 최초 실행 함수
+	 * init
+	 */
 	init : function() {
 		this.getMataData();
-		this.mkEvent();
 	},
+	
 	
 	/**
 	 * 최신 로또 정보 호출 getMataData
@@ -19,19 +24,53 @@ let index = {
 		let numberFrequencyData	= utility.ajax("/lotto/getNumberFrequency", {});
 		let firstNumberData		= utility.ajax("/lotto/getFirstNumber", {});
 		
+		if(yearData.length === 0 ) {
+			this.mkNullLayout("yearPriceChart");
+		} else {
+			this.mkYearMataData("yearPriceChart", yearData);
+		}
 		
-		this.mkYearMataData(yearData);
-		this.mkOrderData(orderData);
-		this.mkAddrRankingData(addrRankingData);
-		this.mkNumberFrequencyData(numberFrequencyData);
-		this.mkNumberData(firstNumberData);
+		if(orderData.length === 0 ) {
+			this.mkNullLayout("orderChart");
+		} else {
+			this.mkOrderData("orderChart", orderData);
+		}
+		
+		if(addrRankingData.length === 0 ) {
+			this.mkNullLayout("addrRankingChart");
+		} else {
+			this.mkAddrRankingData("addrRankingChart", addrRankingData);
+		}
+		
+		if(numberFrequencyData.length === 0 ) {
+			this.mkNullLayout("numberFrequencyChart");
+		} else {
+			this.mkNumberFrequencyData("numberFrequencyChart", numberFrequencyData);
+		}
+		
+		if(firstNumberData.length === 0 ) {
+			this.mkNullLayout("numCountChart");
+		} else {
+			this.mkNumberData("numCountChart", firstNumberData);
+		}
+		
 	},
+	
+	
+	/**
+	 * 레이아웃 예외처리
+	 * mkNullLayout
+	 */
+	mkNullLayout : function(id) {
+		$("#" + id).html(` 등록된 정보가 없습니다. `);
+	},
+	
 	
 	/**
 	 * 1등 주소 정보 data
 	 * mkAddrRankingData
 	 */
-	mkAddrRankingData : function(data) {
+	mkAddrRankingData : function(id, data) {
 		let keys 	= [];
 		let series 	= [];
 		
@@ -45,8 +84,9 @@ let index = {
 			
 		}
 		
-		this.mkAddrRankingChart("addrRankingChart", keys, series);
+		this.mkAddrRankingChart(id, keys, series);
 	},
+	
 	
 	/**
 	 * 1등 상점 지역별 당첨인원
@@ -105,11 +145,12 @@ let index = {
 		});
 	},
 	
+	
 	/**
 	 * 회차별 data 추출
 	 * mkOrderData
 	 */
-	mkOrderData : function(data) {
+	mkOrderData : function(id, data) {
 		
 		let keys		= [];
 		let priceArr 	= [];
@@ -134,24 +175,25 @@ let index = {
 		
 		let seriesArr	= [
 			{
-				name 	: "회차별 판매 금액",
+				name 	: "판매 금액",
 				data	: priceArr,
 			},
 			{
-				name 	: "회차별 당첨 인원",
+				name 	: "당첨 인원",
 				data	: countArr,
 			},
 		];
 		
 		
-		this.mkOrderChart("orderChart", keys, seriesArr);
+		this.mkOrderChart(id, keys, seriesArr);
 	},
+	
 	
 	/**
 	 * 년도 별 data 추출
 	 * mkYearMataData
 	 */
-	mkYearMataData : function(list) {
+	mkYearMataData : function(id, list) {
 		let groupList		=  _.groupBy(list, "year");
 		let keys			= _.keys(groupList);
 		let	yearTotalPrice	= [];
@@ -193,8 +235,9 @@ let index = {
 			},
 		];
 		
-		this.mkYearchart("yearPriceChart","", keys, seriesArr);
+		this.mkYearchart(id,"", keys, seriesArr);
 	},
+	
 	
 	/**
 	 * 년도별 판매 금액
@@ -242,6 +285,7 @@ let index = {
 		});
 	},
 	
+	
 	/**
 	 *  년도별  로또 판매금액
 	 * mkYearTotalPriceChart
@@ -287,11 +331,12 @@ let index = {
 		});
 	},
 	
+	
 	/**
 	 * 번호 랭크 data 생성 함수
 	 * mkNumberData
 	 */
-	mkNumberData : function(list) {
+	mkNumberData : function(id, list) {
 		let dataObj		= {};
 		let resultList	= [];
 		
@@ -326,8 +371,9 @@ let index = {
 		    return a.y > b.y ? -1 : a.y < b.y ? 1 : 0;
 		});
 		
-		this.mkNumberTrend("numCountChart", "번호별 출현 횟수", resultList);
+		this.mkNumberTrend(id, "", resultList);
 	},
+	
 	
 	/**
 	 * 최대 당첨 번호 트렌드 생성
@@ -377,11 +423,12 @@ let index = {
 		
 	},
 	
+	
 	/**
 	 * 번호별 빈도 data 생성 함수
 	 * numberFrequencyData
 	 */
-	mkNumberFrequencyData : function(list) {
+	mkNumberFrequencyData : function(id, list) {
 		let groupList		=  _.groupBy(list, "drawNo");
 		let keys			= _.keys(groupList);
 		let series			= [];
@@ -421,7 +468,7 @@ let index = {
 			
 		}
 		
-		this.mkNumberdrilldownChart("numberFrequencyChart", "회차별 당첨인원", series, drilldown);
+		this.mkNumberdrilldownChart(id, "", series, drilldown);
 	},
 	
 	/**
@@ -464,7 +511,7 @@ let index = {
                 enabled: false
             },
 		    series: [{
-		            name		: "로또번호",
+		            name		: "당첨횟수",
 		            colorByPoint: true,
 		            data		: series
 		    }],
@@ -473,15 +520,7 @@ let index = {
 		    }
 		});
 	},
-	
-	/**
-	 * 이벤트 생성 함수
-	 * mkEvent
-	 */
-	mkEvent : function() {
-		let self = this;
-		
-	}
+
 };
 
 index.init();

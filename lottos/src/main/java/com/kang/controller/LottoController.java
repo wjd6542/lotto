@@ -103,8 +103,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getAddrgroupData", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getAddrgroupData() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectAddrgroupData();
-		return list;
+		return lottoService.selectAddrgroupData();
 	}
 	
 	/**
@@ -118,8 +117,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getAddrRank", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getAddrRank() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectAddrRank();
-		return list;
+		return lottoService.selectAddrRank();
 	}
 	
 	/**
@@ -133,8 +131,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getFirstNumber", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getFirstNumber() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectFirstNumber();
-		return list;
+		return lottoService.selectFirstNumber();
 	}
 	
 	/**
@@ -148,8 +145,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getNumberFrequency", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getNumberFrequency() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectNumberFrequency();
-		return list;
+		return lottoService.selectNumberFrequency();
 	}
 	
 	/**
@@ -163,8 +159,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getYearData", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getYearData() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectYearData();
-		return list;
+		return lottoService.selectYearData();
 	}
 	
 	/**
@@ -178,8 +173,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getMaxRanking", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> selectMaxRanking() throws Exception {
-		Map<String, Object> map = lottoService.selectMaxRanking();
-		return map;
+		return lottoService.selectMaxRanking();
 	}
 
 	/**
@@ -193,8 +187,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getLastNum", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> selectLastNum() throws Exception {
-		Map<String, Object> map = lottoService.selectLastNum();
-		return map;
+		return lottoService.selectLastNum();
 	}
 	
 	/**
@@ -208,8 +201,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getOrderData", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> selectOrderData() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectOrderData();
-		return list;
+		return lottoService.selectOrderData();
 	}
 	
 	/**
@@ -223,8 +215,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getAddrRanking", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> selectAddrRanking() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectAddrRanking();
-		return list;
+		return lottoService.selectAddrRanking();
 	}
 	
 	/**
@@ -238,8 +229,7 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getAddrGameType", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> selectAddrGameType() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectAddrGameType();
-		return list;
+		return lottoService.selectAddrGameType();
 	}
 	
 	/**
@@ -253,9 +243,39 @@ public class LottoController {
 	@RequestMapping(value="/lotto/getAddrArea", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> selectAddrArea() throws Exception {
-		List<Map<String, Object>> list = lottoService.selectAddrArea();
-		return list;
+		return lottoService.selectAddrArea();
 	}
+	
+	
+	/**
+     * 레포트 - 년도별 정보
+     * @link /lotto/selectReportYearData
+     * @param res
+     * @param req
+     * @return list
+     * @throws Exception
+     */
+	@RequestMapping(value="/lotto/reportYearData", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String, Object>> selectReportYearData() throws Exception {
+		return lottoService.selectReportYearData();
+	}
+	
+	/**
+     * 레포트 - 월별 정보
+     * @link /lotto/selectReportYearData
+     * @param res
+     * @param req
+     * @return list
+     * @throws Exception
+     */
+	@RequestMapping(value="/lotto/reportMonthData", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String, Object>> selectReportMonthData() throws Exception {
+		return lottoService.selectReportMonthData();
+	}
+	
+	
 	
 	/**
 	 * 로또 정보 삽입
@@ -270,8 +290,11 @@ public class LottoController {
 		String drawNo = request.getParameter("drawNo");
 		try {
 		
-			if(drawNo  == null) {
-				for (int i = 1; i < 911; i++) {
+			if(drawNo == null) {
+				
+				System.out.println("check !!" + drawNo);
+				
+				for (int i = 910; i < 927; i++) {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("drawNo",  String.valueOf(i));
 					// 1초 지연
@@ -280,6 +303,7 @@ public class LottoController {
 					System.out.println("insert " + i + "\n");
 				}
 			} else {
+				System.out.println("check !!" + drawNo);
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("drawNo",  drawNo);
 				lottoService.insertLotto(map);
@@ -304,7 +328,7 @@ public class LottoController {
 		try {
 		
 			if(drawNo  == null) {
-				for (int i = 1; i < 911; i++) {
+				for (int i = 910; i < 927; i++) {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("drawNo",  String.valueOf(i));
 					// 1초 지연

@@ -10,12 +10,14 @@
 		where	drawNo = #{drawNo};
 	</select>
 	
+	
 	<!-- 전체 로또 정보 조회 -->
 	<select id="selectOneLottoMaster" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		select	* 
 		from	lotto_master 
 		where	drawNo = #{drawNo};
 	</select>
+	
 	
 	<!-- 전체 로또 정보 조회 -->
 	<select id="selectLottoDetail" resultType="java.util.HashMap" parameterType="java.util.HashMap">
@@ -24,6 +26,7 @@
 		where	drawNo = #{drawNo};
 	</select>
 	
+	
 	<!-- 전체 로또 정보 조회 -->
 	<select id="selectAddress" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		select	* 
@@ -31,26 +34,30 @@
 		where	drawNo = #{drawNo};
 	</select>
 	
+	
 	<!-- 최신 로또 회차 조회 -->
 	<select id="selectMaxLotto" resultType="java.util.HashMap">
 		select	max(lottoNum) 
 		from	lotto_master;
 	</select>
 	
+	
 	<!-- 위치 정보 그룹 data -->
 	<select id="selectAddrgroupData" resultType="java.util.HashMap">
-		select	addrType1 as addr, count(drawNo) as cnt
-		from	lotto_address 
-		group by addrType1;
+		select		addrType1 as addr, count(drawNo) as cnt
+		from		lotto_address 
+		group by 	addrType1;
 	</select>
+	
 	
 	<!-- 위치 정보 그룹 data -->
 	<select id="selectAddrRank" resultType="java.util.HashMap">
-		select count(address) as cnt, CONCAT(addrType1, " ", shopName) as shopName
-		from lotto_address
-		group by address
-		order by cnt desc limit 0,10 ;
+		select 		count(address) as cnt, CONCAT(addrType1, " ", shopName) as shopName
+		from 		lotto_address
+		group by 	address
+		order by	cnt desc limit 0,10 ;
 	</select>
+	
 
 	<!-- 번호별 카운트 조회 -->
 	<select id="selectFirstNumber" resultType="java.util.HashMap">
@@ -58,27 +65,31 @@
 		from	lotto_master;
 	</select>
 	
+	
 	<!-- 로또 빈도 조회 -->
 	<select id="selectNumberFrequency" resultType="java.util.HashMap">
 		select	b.drawNo, num1, num2, num3, num4, num5, num6, bonusNum as num7, lottoRank, winningCnt
 		from	lotto_master a, lotto_detail b
 		where	a.drawNo = b.drawNo;
 	</select>
+	
 
 	<!-- 로또 빈도 조회 -->
 	<select id="selectMaxRanking" resultType="java.util.HashMap">
-		select * 
-		from lotto_master a, lotto_detail b
-		where a.drawNo = b.drawNo
-		order by totalSellingPrice desc
-		LIMIT 1;
+		select		* 
+		from 		lotto_master a, lotto_detail b
+		where 		a.drawNo = b.drawNo
+		order by 	totalSellingPrice desc
+		LIMIT 		1;
 	</select>
+	
 
 	<!-- 로또 위치 주소 조회 -->
 	<select id="selectAllAddress" resultType="java.util.HashMap">
 		select	* 
 		from	lotto_address;
 	</select>
+	
 	
 	<!-- 로또 위치 주소 조회 -->
 	<select id="selectOneAddress" resultType="java.util.HashMap">
@@ -87,12 +98,14 @@
 		where	drawNo = #{drawNo};
 	</select>
 	
+	
 	<!-- 로또 위치 주소 조회 -->
 	<select id="selectYearData" resultType="java.util.HashMap">
 		select	b.drawNo, num1, num2, num3, num4, num5, num6, bonusNum as num7, winningCnt, substring_index(a.drawDate,'-', 1)  as year, b.sellingPriceByRank
 		from	lotto_master a, lotto_detail b 
 		where	a.drawNo = b.drawNo;
 	</select>
+	
 	
 	<!-- 최신 로또 회차 추출-->
 	<select id="selectLastNum" resultType="java.util.HashMap">
@@ -102,12 +115,14 @@
 		limit 1;
 	</select>
 	
+	
 	<!-- 회차별 정보-->
 	<select id="selectOrderData" resultType="java.util.HashMap">
 		select	sum(winningCnt) as cnt, sum(winningPriceByRank) as price, drawNo
 		from 	lotto_detail 
 		group by drawNo;
 	</select>
+	
 	
 	<!-- 지역별 1등 당첨인원-->
 	<select id="selectAddrRanking" resultType="java.util.HashMap">
@@ -118,6 +133,7 @@
 		order by cnt desc;
 	</select>
 	
+	
 	<!-- 지역별 1등 게임 타입 -->
 	<select id="selectAddrGameType" resultType="java.util.HashMap">
 		select	count(*) as cnt , gameType
@@ -125,6 +141,7 @@
 		where 	address is not null
 		group by gameType;
 	</select>
+	
 	
 	<!-- 1등 지역구 -->
 	<select id="selectAddrArea" resultType="java.util.HashMap">
@@ -134,6 +151,25 @@
 		group by addrType2 
 		order by cnt desc;
 	</select>
+	
+	
+	<!-- 레포트 - 년도별 정보 -->
+	<select id="selectReportYearData" resultType="java.util.HashMap">
+		select		date_format(b.drawDate, "%Y") as year , sum(b.winningCnt) as cnt, sum(a.totalSellingPrice) as total
+		from 		lotto_master a, lotto_detail b
+		where 		a.masterNum = b.masterNum and b.lottoRank = 1
+		group by 	date_format(b.drawDate, "%Y");
+	</select>
+	
+	
+	<!-- 레포트 - 월별 정보 -->
+	<select id="selectReportMonthData" resultType="java.util.HashMap">
+		select		date_format(b.drawDate, "%Y-%m") as month , sum(b.winningCnt) as cnt, sum(a.totalSellingPrice) as total
+		from 		lotto_master a, lotto_detail b
+		where 		a.masterNum = b.masterNum and b.lottoRank = 1
+		group by 	date_format(b.drawDate, "%Y-%m");
+	</select>
+
 
 	<!-- 로또정보 삽입 -->
 	<insert id="insertLottoMaster" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="master_num">
